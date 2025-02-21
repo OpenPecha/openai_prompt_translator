@@ -1,5 +1,9 @@
 from OpenAI_Translator import translate_text
 import json
+import pandas as pd
+import os
+
+
 stanza = "ཇི་ལྟར་མཐོང་ཐོས་ཤེས་པ་དག །\nའདིར་ནི་དགག་པར་བྱ་མིན་ཏེ། །\nའདིར་ནི་སྡུག་བསྔལ་རྒྱུར་གྱུར་པ། །\nབདེན་པར་རྟོག་པ་བཟློག་བྱ་ཡིན། །"
 
 commentaries = """Commentaries:  
@@ -10,16 +14,18 @@ commentaries = """Commentaries:
     Commentary 3:
     གལ་ཏེ་དེ་ལྟར་ན་ཡང་ཤེས་པ་རིག་པ་མེད་ན་དེ་ཇི་ལྟར་མཐོང་ངོ་འདི་ཐོས་སོ་འདི་ཤེས་སོ་ཞེས་བྱ་བའི་ཐ་སྙད་དུ་འགྱུར་རོ་ཞེ་ན། ཇི་ལྟར་ཞེས་བྱ་བ་ལ་སོགས་པ་གསུངས་སོ། ། མཐོང་བ་ལ་སོགས་པའི་ཐ་སྙད་དག་འཇིག་རྟེན་འདིར་དགག་པར་བྱ་བ་མ་ཡིན་པ་དེ་ཁོ་ནའོ། ། འོན་ཀྱང་འདིར་ནི་འཁོར་བའི་སྡུག་བསྔལ་མ་ལུས་པའི་རྒྱུར་འགྱུར་བའི་དངོས་པོར་ཀུན་རྟོག་པ་ནི་གདོན་ཆེན་པོས་བདེན་པ་ཉིད་དུ་སྒྲོ་བཏགས་པ་བྱས་པ་གང་ཡིན་པ་དེ་དགག་པར་བྱ་བ་ཡིན་པས་སྐྱོན་མེད་དོ། ། གཞན་ཡང་ཁྱོད་ཀྱིས་ཇི་སྐད་དུ། གལ་ཏེ་འཁྲུལ་པ་ཡང་མེད་ན། ། ཞེས་བྱ་བ་ལ་སོགས་པ་བརྗོད་པ་དེ་ལ་ཡང་བརྗོད་པར་བྱ་སྟེ།"""
 
+language = "chinese"
+translation = translate_text(stanza, commentaries, language)
 
-translation = translate_text(stanza, commentaries)
 output_data = {
     "stanza": stanza,
-    "translation": translation
+    "translation": translation,
+    "language": language
 }
 
-output_file = "data/output.json"
+df = pd.DataFrame([output_data])
 
-with open(output_file, "w", encoding="utf-8") as f:
-    json.dump(output_data, f, ensure_ascii=False, indent=4)
+df.to_csv("data/output.csv", index=False)
+df.to_json("data/output.json", orient="records", force_ascii=False, indent=4)
 
-print(f"Translation saved to {output_file}")
+print(f"Translation saved in data folder as output.csv and output.json")
