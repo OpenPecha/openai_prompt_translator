@@ -1,9 +1,10 @@
 import os
 from config import client
 
-def translate_text(stanza, commentaries):
+
+def translate_text(stanza, commentaries, language):
     prompt = f"""
-    Translate the following Tibetan stanza into English. Return only the translation of the stanzas in stanza format.
+    Return only the translation of the stanzas in stanza format.
     
     Stanza:
     {stanza}
@@ -17,7 +18,7 @@ def translate_text(stanza, commentaries):
         messages=[
                 {
                 "role": "system",
-                "content": "You will be provided with a Tibetan stanza and its commentaries, and your task is to translate the stanza into English. You can refer to the commentaries to understand the meaning of the stanza."
+                "content": f"You will be provided with a Tibetan stanza and its commentaries, and your task is to translate the stanza into {language}. You can refer to the commentaries to understand the meaning of the stanza."
             },
                 {"role": "user", "content": prompt},
                   ],
